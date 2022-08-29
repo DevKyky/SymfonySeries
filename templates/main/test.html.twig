@@ -37,5 +37,17 @@
         {% endif %}
     {% endfor %}
 
+    {# Création d'un objet #}
+    {% set serie =
+        {
+            'name' : 'Stranger Things',
+            'year' : 2016,
+            'author' : 'Duffer'
+        }
+    %}
+
+    <h3>{{ serie.name }}</h3>
+    <p>{{ serie.year }} - {{ serie.author }}</p>
+
 </body>
 </html>
