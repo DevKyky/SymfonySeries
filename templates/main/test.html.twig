@@ -12,5 +12,30 @@
     <h1>Hello There, Series !</h1>
     <h2>From Test</h2>
 
+    {# Création de variable #}
+    {% set name = "Mon nom" %}
+
+    {# Afficher le contenu d'une variable #}
+    <h3>Hello {{ name }}</h3>
+
+    {# Création d'un tableau #}
+    {% set colors = ['blue', 'yellow', 'red', 'green', 'white', 'black', 'orange'] %}
+
+    {# Boucler sur un tableau #}
+    {% for color in colors %}
+        {# Usage de loop pour un tableau #}
+        {% if loop.first %}
+            <p>Première itération</p>
+        {% endif %}
+
+        <div style="background:{{ color }};padding:0.5rem;">{{ color }}</div>
+        <div>Index: {{ loop.index }}</div>
+        <br>
+
+        {% if loop.last %}
+            <div>Nombre d'élément(s) du tableau : {{ loop.length }}</div>
+        {% endif %}
+    {% endfor %}
+
 </body>
 </html>
