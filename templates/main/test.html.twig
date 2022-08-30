@@ -1,15 +1,7 @@
-<!doctype html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport"
-          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
-    <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title>Document</title>
-</head>
-<body>
+{% extends 'base.html.twig' %}
 
-    <h1>Hello There, Series !</h1>
+{% block body %}
+    <h1>Hello There, Series ! {{ username }}</h1>
     <h2>From Test</h2>
 
     {# Création de variable #}
@@ -43,11 +35,24 @@
             'name' : 'Stranger Things',
             'year' : 2016,
             'author' : 'Duffer'
-        }
-    %}
+        } %}
 
     <h3>{{ serie.name }}</h3>
-    <p>{{ serie.year }} - {{ serie.author }}</p>
 
-</body>
-</html>
+    {% for key, val in serie %}
+        <div>{{ key }} : {{ val }}</div>
+    {% endfor %}
+
+    <hr>
+
+    {# Quelques filtres #}
+    <div>{{ name | upper }} contient {{ name | length }} lettre(s)</div>
+
+    <div>Tableau de couleurs contient {{ colors | length }} couleur(s)</div>
+
+    <div>Tableau : {{ colors | join(', ') }}</div>
+
+    <div>{{ "now" | date('Y-m-d') }}</div>
+{% endblock %}
+
+{% block title %} {{ parent() }} | Test {% endblock %}
