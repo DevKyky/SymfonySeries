@@ -36,7 +36,7 @@ nav ul li {
 }
 
 .brand {
-    font-size: 1.5rem;
+    font-size: 2rem;
     font-weight: bold;
     color: #B0413E;
 }
@@ -50,4 +50,11 @@ nav ul li {
 h1 {
     text-align: center;
     text-transform: uppercase;
+}
+
+footer {
+    background: #36393e;
+    font-size: 1.25rem;
+    text-align: center;
+    padding: 0.75rem;
 }

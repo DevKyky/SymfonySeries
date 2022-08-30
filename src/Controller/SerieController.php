@@ -20,7 +20,7 @@ class SerieController extends AbstractController
     }
 
     #[Route('/{id}', name: 'show', requirements: ['id' => '\d+'])]
-    public function show($id): Response
+    public function show(int $id): Response
     {
         dump($id);
 
