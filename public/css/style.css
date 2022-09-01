@@ -1,3 +1,6 @@
+@import url('https://fonts.googleapis.com/css2?family=Bebas+Neue&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Fjalla+One&display=swap');
+
 body {
     font-family: sans-serif;
     background: #424549;
@@ -15,6 +18,7 @@ a {
 
 a:hover:not(.brand) {
     color: #DDDDDD;
+    transition: .5s;
     cursor: pointer;
 }
 
@@ -36,8 +40,10 @@ nav ul li {
 }
 
 .brand {
-    font-size: 2rem;
+    font-family: 'Bebas Neue', cursive;
+    font-size: 2.5rem;
     font-weight: bold;
+    letter-spacing: 0.25rem;
     color: #B0413E;
 }
 
@@ -57,4 +63,70 @@ footer {
     font-size: 1.25rem;
     text-align: center;
     padding: 0.75rem;
+}
+
+.serie-list {
+    display: flex;
+    flex-wrap: wrap;
+}
+
+.serie-list article {
+    text-align: center;
+    font-family: inherit;
+    font-family: 'Bebas Neue', cursive;
+    font-size: 1.5rem;
+}
+
+article {
+    position: relative;
+    padding: .75rem;
+}
+
+article div {
+    position: absolute;
+    display: none;
+    top: calc(50% - 1.5rem);
+    left: 50%;
+    transform: translate(-50%, -50%);
+}
+
+article a img {
+    width: 100%;
+    height: auto;
+    max-width: 200px;
+}
+
+article:hover a img {
+    transform: scale(85%);
+    transition: .5s;
+    filter: grayscale(100%);
+    opacity: 10%;
+    cursor: pointer;
+}
+
+article:hover div {
+    display: flex;
+    cursor: pointer;
+}
+
+.information {
+    font-family: 'Fjalla One', sans-serif;
+    color: #DDDDDD;
+}
+
+.detail {
+    display: flex;
+}
+
+.detail .infos {
+    margin-left: 1.5rem;
+}
+
+.infos {
+    font-size: 1.25rem;
+}
+
+.infos div:first-child {
+    font-size: 2rem;
+    margin-bottom: 0.75rem;
 }

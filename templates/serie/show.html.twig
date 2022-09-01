@@ -5,6 +5,28 @@
 {% endblock %}
 
 {% block body %}
-    <h1>Detail of series : {{ noSerie }}</h1>
+    <h1>Detail of series</h1>
+    <div class="detail">
+        <img src="{{ asset('images/posters/series/' ~ serie.poster) }}" alt="{{ serie.poster }} poster">
+        <div class="infos">
+            <div>{{ serie.name }} - {{ serie.firstAirDate | date('Y') }}</div>
+            <div>User rating <span class="information">{{ serie.vote }}</span></div>
+            <div>Categorired in <span class="information">{{ serie.genres }}</span></div>
+            <div>Serie status <span class="information">{{ serie.status }}</span></div>
+            <br>
+            <div>Details</div>
+            <p>{{ serie.overview }}</p>
+        </div>
+    </div>
+{% endblock %}
+
+{% block extraCSS %}
+    <style>
+        body {
+            background-image: linear-gradient(rgba(0, 0, 0, 0.2), rgba(0, 0, 0, 1)), url("{{ asset('images/backdrops/' ~ serie.backdrop) }}");
+            background-repeat: no-repeat;
+            background-size: contain;
+        }
+    </style>
 {% endblock %}
 

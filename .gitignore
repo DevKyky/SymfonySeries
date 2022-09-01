@@ -52,3 +52,7 @@
 /.web-server-pid
 
 /.idea
+.env.local
+.env.test
+public/images/backdrops/*
+public/images/posters/*
