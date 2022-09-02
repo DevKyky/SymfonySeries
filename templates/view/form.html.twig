@@ -1,0 +1,16 @@
+{% extends 'base.html.twig' %}
+{% form_theme serieForm 'view/formTheme.html.twig' %}
+
+{% block form_row %}
+    <div class="flex_div">
+        {{ form_label(form) }}
+        <div>
+            <div class="error">
+                {{ form_errors(form) }}
+            </div>
+            <div>
+                {{ form_widget(form) }}
+            </div>
+        </div>
+    </div>
+{% endblock %}

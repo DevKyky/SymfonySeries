@@ -5,6 +5,7 @@ namespace App\Entity;
 use App\Repository\SerieRepository;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Validator\Constraints as Assert;
 
 #[ORM\Entity(repositoryClass: SerieRepository::class)]
 class Serie
@@ -15,15 +16,19 @@ class Serie
     private ?int $id = null;
 
     #[ORM\Column(length: 255)]
+    #[Assert\NotBlank(message: 'Please provide a name for the serie')]
+    #[Assert\Length(min: 1, max: 255, minMessage: 'Minimum 255 characters', maxMessage: 'Maximum 255 characters')]
     private ?string $name = null;
 
     #[ORM\Column(type: Types::TEXT, nullable: true)]
     private ?string $overview = null;
 
     #[ORM\Column(length: 50)]
+    #[Assert\Choice(['canceled', 'returning', 'ended'], message: 'Incorrect value')]
     private ?string $status = null;
 
     #[ORM\Column(type: Types::DECIMAL, precision: 3, scale: 1)]
+    #[Assert\Range(notInRangeMessage: 'Vote must be between 0 and 10', min: 0, max: 10)]
     private ?string $vote = null;
 
     #[ORM\Column(type: Types::DECIMAL, precision: 6, scale: 2)]
@@ -33,9 +38,11 @@ class Serie
     private ?string $genres = null;
 
     #[ORM\Column(type: Types::DATE_MUTABLE)]
+    #[Assert\LessThan(propertyPath: 'lastAirDate')]
     private ?\DateTimeInterface $firstAirDate = null;
 
     #[ORM\Column(type: Types::DATE_MUTABLE)]
+    #[Assert\GreaterThan(propertyPath: 'firstAirDate')]
     private ?\DateTimeInterface $lastAirDate = null;
 
     #[ORM\Column(length: 255)]

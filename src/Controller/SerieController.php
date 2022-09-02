@@ -3,10 +3,12 @@
 namespace App\Controller;
 
 use App\Entity\Serie;
+use App\Form\SerieType;
 use App\Repository\SerieRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\ParamConverter;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 
@@ -32,11 +34,11 @@ class SerieController extends AbstractController
     public function show(SerieRepository $serieRepository, Serie $serie): Response
     {
         // Sans ParamConverter
-/*        $serie = $serieRepository->find($id);
+        /*        $serie = $serieRepository->find($id);
 
-        if(!$serie) {
-            throw $this->createNotFoundException("Ooops! Serie not found !");
-        }*/
+                if(!$serie) {
+                    throw $this->createNotFoundException("Ooops! Serie not found !");
+                }*/
 
         return $this->render('serie/show.html.twig', [
             'serie' => $serie
@@ -44,39 +46,67 @@ class SerieController extends AbstractController
     }
 
     #[Route('/add', name: 'add')]
-    public function add(EntityManagerInterface $entityManager): Response
+    public function add(Request $request, SerieRepository $serieRepository): Response
     {
-        // TODO création d'une série
-
         $serie = new Serie();
-        $serie->setBackdrop("azerty.png")
-            ->setDateCreated(new \DateTime())
-            ->setFirstAirDate(new \DateTime("-1 year"))
-            ->setGenres("SF")
-            ->setLastAirDate(new \DateTime())
-            ->setName("Stargate SG1")
-            ->setPopularity(9999)
-            ->setPoster("poster.png")
-            ->setStatus("Ended")
-            ->setTmdbId(1234)
-            ->setVote(10.0);
+        $serieForm = $this->createForm(SerieType::class, $serie);
 
-        dump($serie);
+        $serieForm->handleRequest($request);
 
-        $entityManager->persist($serie);
-        $entityManager->flush();
+        if ($serieForm->isSubmitted() && $serieForm->isValid()) {
+            dump($serie);
 
-        dump($serie);
+            // Mise à jour de l'entité
+            $serie->setDateCreated(new \DateTime());
+            $genres = $serieForm->get('genres')->getData();
+            $serie->setGenres(implode(" / ", $genres));
 
-        $serie->setName("Stargate Atlantis");
-        $entityManager->persist($serie);
-        $entityManager->flush();
+            // Enregistrement des données
+            $serieRepository->add($serie, true);
 
-        dump($serie);
+            // Feedback user
+            $this->addFlash('success', 'Serie added !');
 
-        $entityManager->remove($serie);
-        $entityManager->flush();
+            // Redirection vers la page de détail
+            return $this->redirectToRoute('serie_show', [
+                'id' => $serie->getId()
+            ]);
+        }
 
-        return $this->render('serie/add.html.twig');
+        return $this->render('serie/add.html.twig', [
+            'serieForm' => $serieForm->createView()
+        ]);
+    }
+
+    #[Route('/edit/{id}', name: 'edit', requirements: ['id' => '\d+'])]
+    public function edit(Request $request, SerieRepository $serieRepository, int $id): Response
+    {
+        $serie = $serieRepository->find($id);
+        $serieForm = $this->createForm(SerieType::class, $serie);
+
+        $serieForm->handleRequest($request);
+
+        if ($serieForm->isSubmitted() && $serieForm->isValid()) {
+
+            // Mise à jour de l'entité
+            $serie->setDateModified(new \DateTime());
+            $genres = $serieForm->get('genres')->getData();
+            $serie->setGenres(implode(" / ", $genres));
+
+            // Enregistrement des données
+            $serieRepository->add($serie, true);
+
+            // Feedback user
+            $this->addFlash('success', 'Serie edited !');
+
+            // Redirection vers la page de détail
+            return $this->redirectToRoute('serie_show', [
+                'id' => $serie->getId()
+            ]);
+        }
+
+        return $this->render('serie/edit.html.twig', [
+            'serieForm' => $serieForm->createView()
+        ]);
     }
 }

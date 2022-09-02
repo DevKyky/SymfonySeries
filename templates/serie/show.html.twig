@@ -6,6 +6,11 @@
 
 {% block body %}
     <h1>Detail of series</h1>
+
+    <div>
+        <a href="{{ path('serie_edit', {'id': serie.id}) }}"><buttton>Edit</buttton></a>
+    </div>
+
     <div class="detail">
         <img src="{{ asset('images/posters/series/' ~ serie.poster) }}" alt="{{ serie.poster }} poster">
         <div class="infos">
