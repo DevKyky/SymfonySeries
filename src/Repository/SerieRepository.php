@@ -4,6 +4,7 @@ namespace App\Repository;
 
 use App\Entity\Serie;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
+use Doctrine\ORM\Tools\Pagination\Paginator;
 use Doctrine\Persistence\ManagerRegistry;
 
 /**
@@ -39,7 +40,7 @@ class SerieRepository extends ServiceEntityRepository
         }
     }
 
-    public function findBestSeries($vote = 1) {
+    public function findBestSeries(int $page) {
         // DQL
 /*        $entityManager = $this->getEntityManager();
         $dql = "SELECT s
@@ -52,17 +53,25 @@ class SerieRepository extends ServiceEntityRepository
         $query->setMaxResults(50);
         return $query->getResult();*/
 
+        $limit = 50;
+        $offset = (($page - 1) * $limit);
+
         // QueryBuilder
         $qb = $this->createQueryBuilder('s');
-        $qb->andWhere("s.popularity > 100")
-            ->andWhere("s.vote > :vote")
+        $qb->leftJoin("s.seasons", "seasons")
+            ->addSelect('seasons')
+//        $qb->andWhere("s.popularity > 100")
+//            ->andWhere("s.vote > :vote")
             ->addOrderBy("s.popularity", "DESC");
 
-        $qb->setParameter('vote', $vote);
+//        $qb->setParameter('vote', $vote);
 
         $query =$qb->getQuery();
-        $query->setMaxResults(50);
+        $query->setMaxResults($limit);
+        $query->setFirstResult($offset);
 
-        return $query->getResult();
+        $paginator = new Paginator($query);
+
+        return $paginator;
     }
 }

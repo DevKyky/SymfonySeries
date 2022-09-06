@@ -97,8 +97,8 @@ article a img {
 }
 
 article:hover a img {
-    transform: scale(85%);
-    transition: .5s;
+    transform: scale(95%);
+    transition: .4s;
     filter: grayscale(100%);
     opacity: 10%;
     cursor: pointer;
@@ -129,4 +129,44 @@ article:hover div {
 .infos div:first-child {
     font-size: 2rem;
     margin-bottom: 0.75rem;
+}
+
+.nav-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-around;
+    width: 100%;
+}
+
+.nav-header div a {
+    border: 1px solid #424549;
+    padding: 0.5rem 0.75rem;
+    background: #36393e;
+    color: #AAAAAA;
+}
+
+.nav-header div a:not(:first-child) {
+    margin-left: 1rem;
+}
+
+.seasons {
+    display: flex;
+    flex-wrap: wrap;
+    padding: 1rem;
+    margin-top: 1rem;
+}
+
+.seasons:not(:first-child) .season-detail {
+    margin-left: 1rem;
+}
+
+.season-detail img {
+    width: 100%;
+    height: auto;
+    max-width: 200px;
+}
+
+.season-detail {
+    text-align: center;
+    margin: 0.75rem;
 }

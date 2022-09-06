@@ -5,7 +5,17 @@
 {% endblock %}
 
 {% block body %}
-    <h1>List of series</h1>
+    <div class="nav-header">
+        <h1>List of series</h1>
+        <div>
+            {% if currentPage > 1 %}
+                <a href="{{ path('serie_list', {'page': currentPage - 1}) }}">Previous</a>
+            {% endif %}
+            {% if currentPage < maxPage %}
+                <a href="{{ path('serie_list', {'page': currentPage + 1}) }}">Next</a>
+            {% endif %}
+        </div>
+    </div>
 
     <section class="serie-list">
         {% for serie in series %}
@@ -13,7 +23,7 @@
                 <a href="{{ path('serie_show', {'id': serie.id}) }}">
                     <img src="{{ asset('images/posters/series/' ~ serie.poster) }}" alt="{{ serie.name }}">
                 </a>
-                <div>{{ serie.name }}</div>
+                <div>{{ serie.name }} ( {{ serie.seasons | length }} seasons)</div>
             </article>
         {% endfor %}
     </section>

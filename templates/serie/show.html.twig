@@ -21,8 +21,21 @@
             <br>
             <div>Details</div>
             <p>{{ serie.overview }}</p>
+            <a href="{{ path('serie_delete', {'id': serie.id}) }}" onclick="return confirm('Are you sure to delete this serie ?')">Delete serie</a>
         </div>
     </div>
+
+    <section class="seasons">
+        {% for season in serie.seasons %}
+            <div class="season-detail">
+                <img src="{{ asset('images/posters/seasons/' ~ season.poster) }}" alt="{{ serie.name }} #{{ season.number }}">
+                <div>
+                    <p>Season {{ season.number }} ({{ season.firstAirDate | date('Y') }})</p>
+                    <a href="{{ path('season_delete', {'id': season.id}) }}" onclick="return confirm('Are you sure to delete this season ?')">Delete season</a>
+                </div>
+            </div>
+        {% endfor %}
+    </section>
 {% endblock %}
 
 {% block extraCSS %}
@@ -30,7 +43,8 @@
         body {
             background-image: linear-gradient(rgba(0, 0, 0, 0.2), rgba(0, 0, 0, 1)), url("{{ asset('images/backdrops/' ~ serie.backdrop) }}");
             background-repeat: no-repeat;
-            background-size: contain;
+            background-size: cover;
+            background-attachment: fixed;
         }
     </style>
 {% endblock %}
