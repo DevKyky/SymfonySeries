@@ -3,10 +3,17 @@
         <li><a href="{{ path('main_home') }}" class="brand">Series</a></li>
         <li><a href="{{ path('main_test') }}" title="Test">Test</a></li>
         <li><a href="{{ path('serie_list') }}" title="List of series">List of Series</a></li>
-        <li><a href="{{ path('serie_add') }}" title="Create serie">Create Serie</a></li>
-        <li><a href="{{ path('season_add') }}" title="Create season">Create Season</a></li>
-        <li><a href="{{ path('app_login') }}" title="Create season">Login</a></li>
-        <li><a href="{{ path('app_register') }}" title="Create season">Register</a></li>
-        <li><a href="{{ path('app_logout') }}" title="Create season">Logout</a></li>
+
+        {% if app.user %}
+            {% if is_granted('ROLE_ADMIN') %}
+                <li><a href="{{ path('app_admin') }}" title="Create serie">Dashboard</a></li>
+            {% endif %}
+            <li><a href="{{ path('serie_add') }}" title="Create serie">Create Serie</a></li>
+            <li><a href="{{ path('season_add') }}" title="Create season">Create Season</a></li>
+            <li><a href="{{ path('app_logout') }}" title="Create season">Logout ({{ app.user.firstname }})</a></li>
+        {% else %}
+            <li><a href="{{ path('app_login') }}" title="Create season">Login</a></li>
+            <li><a href="{{ path('app_register') }}" title="Create season">Register</a></li>
+        {% endif %}
     </ul>
 </nav>

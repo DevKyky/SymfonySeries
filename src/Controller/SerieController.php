@@ -7,6 +7,7 @@ use App\Form\SerieType;
 use App\Repository\SeasonRepository;
 use App\Repository\SerieRepository;
 use Doctrine\ORM\EntityManagerInterface;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\ParamConverter;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\File\Exception\FileException;
@@ -60,6 +61,8 @@ class SerieController extends AbstractController
     #[Route('/add', name: 'add')]
     public function add(Request $request, SerieRepository $serieRepository): Response
     {
+        // throw $this->createAccessDeniedException('Access Denied.');
+
         $serie = new Serie();
         $serieForm = $this->createForm(SerieType::class, $serie);
 
@@ -109,6 +112,8 @@ class SerieController extends AbstractController
     #[Route('/edit/{id}', name: 'edit', requirements: ['id' => '\d+'])]
     public function edit(Request $request, SerieRepository $serieRepository, int $id): Response
     {
+        // throw $this->createAccessDeniedException('Access Denied.');
+
         $serie = $serieRepository->find($id);
         $serieForm = $this->createForm(SerieType::class, $serie);
 
