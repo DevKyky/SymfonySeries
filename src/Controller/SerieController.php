@@ -6,6 +6,7 @@ use App\Entity\Serie;
 use App\Form\SerieType;
 use App\Repository\SeasonRepository;
 use App\Repository\SerieRepository;
+use App\Utils\Upload;
 use Doctrine\ORM\EntityManagerInterface;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\ParamConverter;
@@ -59,7 +60,7 @@ class SerieController extends AbstractController
     }
 
     #[Route('/add', name: 'add')]
-    public function add(Request $request, SerieRepository $serieRepository): Response
+    public function add(Request $request, SerieRepository $serieRepository, Upload $upload): Response
     {
         // throw $this->createAccessDeniedException('Access Denied.');
 
@@ -77,20 +78,15 @@ class SerieController extends AbstractController
             $serie->setGenres(implode(" / ", $genres));
 
             // Gestion de l'upload
-            $image = $serieForm->get('backdrop')->getData();
-            /**
-             * @var UploadedFile $image
-             * permet d'accéder à l'autocomplétion quand le type d'une variable n'est pas connu
-             */
-            $newFilename = $serie->getName() . '-' . uniqid() . '.' . $image->guessExtension();
+            $backdrop = $serieForm->get('backdrop')->getData();
+            $serie->setBackdrop($upload->saveFile($backdrop,
+                $serie->getName(),
+                $this->getParameter('serie_backdrop_directory')));
 
-            try {
-                $image->move($this->getParameter('serie_backdrop_directory'), $newFilename);
-                $serie->setBackdrop($newFilename);
-            } catch (FileException $e) {
-                $this->addFlash('error', 'An issue happened.');
-                dump($e->getMessage());
-            }
+            $poster = $serieForm->get('poster')->getData();
+            $serie->setPoster($upload->saveFile($poster,
+                $serie->getName(),
+                $this->getParameter('serie_poster_directory')));
 
             // Enregistrement des données
             $serieRepository->add($serie, true);

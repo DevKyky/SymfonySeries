@@ -53,6 +53,7 @@ class SerieType extends AbstractType
             ])
             ->add('backdrop', FileType::class, [
                 'mapped' => false,
+                'required' => false,
                 'constraints' => [
                     new Image([
                         'maxSize' => '7000k',
@@ -60,7 +61,16 @@ class SerieType extends AbstractType
                     ])
                 ]
             ])
-            ->add('poster')
+            ->add('poster', FileType::class, [
+                'mapped' => false,
+                'required' => false,
+                'constraints' => [
+                    new Image([
+                        'maxSize' => '7000k',
+                        'maxSizeMessage' => 'The file is too big'
+                    ])
+                ]
+            ])
             ->add('tmdbId');
     }
 
