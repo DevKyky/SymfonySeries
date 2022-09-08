@@ -37,4 +37,17 @@ class SerieController extends AbstractController
 
         return $this->json("OK");
     }
+
+    #[Route('/like', name: 'like')]
+    public function updateLike(Request $request, SerieRepository $serieRepository): Response
+    {
+        $data = json_decode($request->getContent());
+        $serie = $serieRepository->find($data->serieId);
+
+        $serie->setLikes(($data->like == 1 ? $serie->getLikes() + 1 : $serie->getLikes() - 1));
+
+        $serieRepository->add($serie, true);
+
+        return $this->json(["likes" => $serie->getLikes()]);
+    }
 }

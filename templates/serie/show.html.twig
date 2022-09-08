@@ -22,6 +22,9 @@
             <div>Details</div>
             <p>{{ serie.overview }}</p>
             <a href="{{ path('serie_delete', {'id': serie.id}) }}" onclick="return confirm('Are you sure to delete this serie ?')">Delete serie</a>
+            <button onclick="updateLike(1)">Like</button>
+            <button onclick="updateLike(0)">Dislike</button>
+            <div>&nbsp;<span id="serie-like">{{ serie.likes }}</span> likes</div>
         </div>
     </div>
 
@@ -36,6 +39,22 @@
             </div>
         {% endfor %}
     </section>
+{% endblock %}
+
+{% block extraJS %}
+    <script>
+        const updateLike = (value) => {
+
+            let data = { serieId: {{ serie.id }}, like: value };
+
+            fetch('{{ path('api_series_like') }}', {method: 'POST', body: JSON.stringify(data)}).then(responses => {
+                responses.json().then(series => {
+                    let likesCounter = document.getElementById('serie-like');
+                    likesCounter.innerHTML = series.likes;
+                })
+            });
+        }
+    </script>
 {% endblock %}
 
 {% block extraCSS %}

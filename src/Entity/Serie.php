@@ -74,6 +74,9 @@ class Serie
     #[Groups(['serie_group'])]
     private Collection $seasons;
 
+    #[ORM\Column]
+    private ?int $likes = null;
+
     public function __construct()
     {
         $this->seasons = new ArrayCollection();
@@ -266,6 +269,18 @@ class Serie
                 $season->setSerie(null);
             }
         }
+
+        return $this;
+    }
+
+    public function getLikes(): ?int
+    {
+        return $this->likes;
+    }
+
+    public function setLikes(int $likes): self
+    {
+        $this->likes = $likes;
 
         return $this;
     }
